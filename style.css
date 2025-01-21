@@ -1,0 +1,303 @@
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+html {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 0.8333333333333333vw; /* 16px on 1920px width */
+  color: white;
+
+  @media (max-width: 991.99px) {
+    font-size: 1.814516129032258vw; /* 18px on 992px width */
+  }
+
+  @media (max-width: 767.99px) {
+    font-size: 2.604166666666667vw; /* 20px on 992px width */
+  }
+}
+
+.container {
+  margin: 0 auto;
+  padding: clamp(2rem, 2.2916vw, 4rem) clamp(3rem, 4.444vw, 6rem);
+
+  @media (max-width: 767.99px) {
+    padding: 10.666vw 5.333vw;
+  }
+}
+
+.main-header {
+  background-color: transparent;
+  /* color: #ffffff; */
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.main-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: clamp(0.75rem, 1.111vw, 2rem);
+
+  .logo {
+    font-size: clamp(1rem, 3.333vw, 2rem);
+    font-weight: 300;
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    @media (max-width: 767.99px) {
+      font-size: clamp(1.25rem, 5.333vw, 2.5rem);
+    }
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    @media (max-width: 767.99px) {
+      display: none;
+    }
+
+    li {
+      a {
+        position: relative;
+        font-weight: 300;
+        &::before {
+          background-color: white;
+          bottom: 0;
+          content: "";
+          height: 1px;
+          left: 0;
+          pointer-events: none;
+          position: absolute;
+          transform: scaleX(0);
+          transform-origin: right;
+          transition: transform 0.8s cubic-bezier(0.24, 0.43, 0.15, 0.97);
+          width: 100%;
+          will-change: transform;
+        }
+
+        &:hover::before {
+          transform: scaleX(1);
+          transform-origin: left;
+        }
+      }
+    }
+  }
+
+  .hamburger-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 2.777vw;
+    .join-us-btn {
+      font-size: clamp(0.75rem, 1.111vw, 2rem);
+      padding: 1.25vw 1.388vw;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background-color: transparent;
+      border: 1px solid white;
+      color: white;
+      cursor: pointer;
+
+      background-position: 100%;
+      -webkit-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
+      background-image: -webkit-linear-gradient(
+        30deg,
+        #ffffff 50%,
+        transparent 50%
+      );
+      background-image: linear-gradient(30deg, #ffffff 50%, transparent 50%);
+      background-size: 500px;
+      background-repeat: no-repeat;
+      will-change: background-position;
+
+      svg {
+        path {
+          transition: fill 0.3s ease-in-out;
+        }
+      }
+
+      &:hover {
+        color: black;
+        background-position: 0%;
+
+        svg {
+          path {
+            fill: black;
+          }
+        }
+      }
+
+      @media (max-width: 767.99px) {
+        display: none;
+      }
+    }
+
+    .hamburger {
+      width: 1.944vw;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.555vw;
+      cursor: pointer;
+      overflow: hidden;
+
+      @media (max-width: 767.99px) {
+        width: 7.466vw;
+        gap: 2.1333vw;
+      }
+
+      .line {
+        width: 100%;
+        height: 1px;
+        background-color: white;
+        transition: all 0.6s;
+        will-change: transform;
+
+        &:before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: -170%;
+          width: 100%;
+          height: 1px;
+          background-color: white;
+          transition: all 0.3s ease-in-out;
+          will-change: transform;
+        }
+
+        &:nth-child(2) {
+          transition-delay: 0.1s;
+        }
+        &:nth-child(3) {
+          transition-delay: 0.2s;
+        }
+      }
+
+      &:hover {
+        .line {
+          transform: translateX(170%);
+        }
+      }
+    }
+  }
+}
+
+.hero {
+  overflow: hidden;
+  position: relative;
+  .hero-bg-container {
+    position: relative;
+    height: 100vh;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+
+    .bg-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .hero-marquee {
+    position: absolute;
+    left: 0%;
+    bottom: 15%;
+    z-index: 2;
+    color: white;
+    overflow: hidden;
+
+    ul {
+      display: flex;
+      gap: 2rem;
+      font-size: clamp(5rem, 10vw, 14rem);
+      font-weight: 300;
+      text-transform: capitalize;
+      letter-spacing: 0.3rem;
+      overflow: hidden;
+
+      li {
+        position: relative;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+    }
+  }
+
+  .hero-footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: clamp(1.25rem, 1.25vw, 2rem);
+    font-weight: 300;
+
+    .arrow-down {
+      @media screen and (max-width: 767.99px) {
+        display: none;
+      }
+    }
+
+    .hero-footer-center-text {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+
+      @media (max-width: 767.99px) {
+        font-size: clamp(1.25rem, 1.5vw, 2rem);
+      }
+
+      div {
+        margin-top: -0.15em;
+        padding-bottom: 0.15em;
+      }
+    }
+
+    .hero-footer-right-text {
+      @media (max-width: 767.99px) {
+        display: none;
+      }
+    }
+  }
+}
