@@ -48,7 +48,7 @@ html {
   width: 100%;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 10;
 }
 
 .main-nav {
@@ -205,7 +205,7 @@ html {
   }
 }
 
-.hero {
+.c-hero {
   overflow: hidden;
   position: relative;
   .hero-bg-container {
@@ -298,6 +298,145 @@ html {
       @media (max-width: 767.99px) {
         display: none;
       }
+    }
+  }
+}
+
+.c-hero2 {
+  overflow: hidden;
+  position: relative;
+  height: 100svh;
+  .hero-bg-container {
+    position: absolute;
+    height: 100vh;
+    inset: 0;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+
+    .hero-bg-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .content {
+    height: 100%;
+    padding: 19.742vw 4.444vw 5.5418vw;
+    position: relative;
+    z-index: 3;
+    cursor: pointer;
+
+    .title-wrapper {
+      /* height: 7.619vw; */
+      margin-bottom: calc(4800svh / var(--basesvh));
+      position: relative;
+      width: 100%;
+
+      .title {
+        backface-visibility: hidden;
+        font-size: clamp(4rem, 10vw, 12rem);
+        width: 100%;
+      }
+    }
+
+    .border {
+      background-color: #fff;
+      height: 1px;
+      width: 100%;
+    }
+
+    .center {
+      gap: 1.666vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: clamp(1rem, 1.385vw, 2rem);
+      line-height: normal;
+      padding: 1.385vw 0;
+      position: relative;
+
+      .text-label {
+        display: flex;
+        gap: 1.385vw;
+
+        .icon {
+          width: 0.8333vw;
+          height: 100%;
+
+          svg {
+            width: 100%;
+            height: auto;
+          }
+        }
+      }
+
+      .number {
+        display: flex;
+        overflow-y: clip;
+        position: relative;
+        overflow: hidden;
+
+        .current {
+          height: max-content;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          overflow: hidden;
+          position: relative;
+        }
+
+        .current__wrapper {
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          position: absolute;
+          will-change: transform;
+
+          .current__inner {
+            display: flex;
+            flex-direction: column;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            position: absolute;
+            will-change: transform;
+          }
+        }
+      }
+    }
+
+    .footer {
+      bottom: 5.541vw;
+      left: 0;
+      padding: 0 4.444vw;
+      position: absolute;
+      width: 100%;
+      font-size: clamp(1rem, 1.25vw, 2rem);
+    }
+
+    .preview {
+      align-items: center;
+      bottom: 5.541vw;
+      display: none;
+      gap: 0.692vw;
+      position: absolute;
+      right: 4.4335vw;
     }
   }
 }
