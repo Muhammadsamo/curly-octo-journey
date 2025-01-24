@@ -63,7 +63,7 @@
           <div class="title-wrapper">
             <span>
               <h1 class="title title-0">
-                <div class="mask-text">
+                <div class="masking-text">
                   <div class="line">Japan</div>
                 </div>
               </h1>
@@ -97,15 +97,16 @@
             </div>
             <div class="number">
               <div class="line-move current">
-                <div class="current__wrapper">
-                  <span class="current__inner">
+                <span class="placeholder">01 &nbsp;</span>
+                <div class="current_wrapper">
+                  <span class="current_inner">
                     <span data-v-c70d5f5c="">01</span>
                     <span data-v-c70d5f5c="">02</span>
                     <span data-v-c70d5f5c="">03</span>
                   </span>
                 </div>
               </div>
-              <div class="line-move in-active"> - <span class="total">03</span>
+              <div class="line-move inactive"> - <span class="total">03</span>
               </div>
             </div>
           </div>
@@ -155,31 +156,50 @@
               </div>
           </div>
           <div class="preview">
-            <div class="img-wrapper">
-              <img
-                class="img"
-                src="./assets/images/destinations/japan.jpg"
-                alt="Japan"
-              />
+            <div class="preview_item js-preview_item-0 active">
+              <p class="preview_number">01.</p>
+              <div class="preview_img">
+                <div class="preview_img-wrapper">
+                  <img
+                  src="./assets/images/destinations/japan.jpg"
+                  alt="Japan"
+                />
+                </div>
+              </div>
             </div>
-            <div class="img-wrapper">
-              <img
-                class="img"
-                src="./assets/images/destinations/japan.jpg"
-                alt="Japan"
-              />
+            <div class="preview_item js-preview_item-1">
+              <p class="preview_number">02.</p>
+              <div class="preview_img">
+                <div class="preview_img-wrapper">
+                  <img
+                  src="./assets/images/destinations/switzerland.jpg"
+                  alt="Japan"
+                />
+                </div>
+              </div>
             </div>
-            <div class="img-wrapper">
-              <img
-                class="img"
-                src="./assets/images/destinations/japan.jpg"
-                alt="Japan"
-              />
+            <div class="preview_item js-preview_item-2">
+              <p class="preview_number">03.</p>
+              <div class="preview_img">
+                <div class="preview_img-wrapper">
+                  <img
+                  src="./assets/images/destinations/australia.jpg"
+                  alt="Japan"
+                />
+                </div>
+              </div>
+            </div>
+
+            <div class="preview_loading">
+              <div class="preview_bar">
+                <div class="preview_fill"></div>
+              </div>
             </div>
           </div>
         </div>
       </section>
     </main>
-    <script src="script.js"></script>
+    <script src="SplitText.js"></script>
+    <script src="hero2.js"></script>
   </body>
 </html>

@@ -306,6 +306,7 @@ html {
   overflow: hidden;
   position: relative;
   height: 100svh;
+
   .hero-bg-container {
     position: absolute;
     height: 100vh;
@@ -313,13 +314,17 @@ html {
 
     &::before {
       content: "";
-      position: absolute;
+      background-image: linear-gradient(0deg, #000, transparent);
+      height: 100%;
       top: 0;
-      left: 0;
       right: 0;
       bottom: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 1;
+      left: 0;
+      opacity: 0.5;
+      position: absolute;
+      transition: opacity 0.8s cubic-bezier(0.24, 0.43, 0.15, 0.97);
+      width: 100%;
+      z-index: 2;
     }
 
     .hero-bg-image {
@@ -338,6 +343,10 @@ html {
     position: relative;
     z-index: 3;
     cursor: pointer;
+
+    .masking-text {
+      overflow: hidden;
+    }
 
     .title-wrapper {
       /* height: 7.619vw; */
@@ -399,7 +408,11 @@ html {
           position: relative;
         }
 
-        .current__wrapper {
+        .placeholder {
+          opacity: 0;
+        }
+
+        .current_wrapper {
           top: 0;
           right: 0;
           bottom: 0;
@@ -407,7 +420,7 @@ html {
           position: absolute;
           will-change: transform;
 
-          .current__inner {
+          .current_inner {
             display: flex;
             flex-direction: column;
             top: 0;
@@ -433,10 +446,61 @@ html {
     .preview {
       align-items: center;
       bottom: 5.541vw;
-      display: none;
+      display: flex;
       gap: 0.692vw;
       position: absolute;
       right: 4.4335vw;
+
+      .preview_item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4156vw;
+        width: 100%;
+
+        .preview_number {
+          font-size: clamp(1rem, 1.2469vw, 2rem);
+        }
+
+        .preview_img {
+          width: 10.806vw;
+          height: 6.649vw;
+
+          .preview_img-wrapper {
+            width: 100%;
+            height: 100%;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+        }
+      }
+
+      .preview_loading {
+        bottom: calc(1.1083vw * -1);
+        left: 0;
+        position: absolute;
+        width: 100%;
+
+        .preview_bar {
+          background-color: #fff6;
+          height: 2px;
+          position: relative;
+          width: 10.806vw;
+
+          .preview_fill {
+            background-color: #ffffff;
+            height: 100%;
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            transform: scaleX(0);
+            transform-origin: left;
+          }
+        }
+      }
     }
   }
 }

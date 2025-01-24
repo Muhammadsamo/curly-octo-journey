@@ -1,14 +1,92 @@
+gsap.registerPlugin(SplitText);
 // on DOM ready
 document.addEventListener("DOMContentLoaded", function () {
-  const heroTextMarqueeArr = gsap.utils.toArray(".js-hero-marquee li");
+  const hero2Content = document.querySelector(".c-hero2 .content");
 
-  // Hero Marquee Animation
-  const heroMarquee = horizontalLoop(heroTextMarqueeArr, {
-    speed: 0.75,
-    repeat: -1,
-    paused: false,
-    paddingRight: 32,
-    snap: 5,
+  // Hero-2 Split text
+  const titleMaskingText = document.querySelectorAll(
+    ".title .masking-text .line"
+  );
+  const centerMaskingText = document.querySelectorAll(
+    ".center .masking-text .line"
+  );
+  const footerMaskingText = document.querySelectorAll(
+    ".footer .masking-text .line"
+  );
+  const currentSlideNumber = document.querySelector(
+    ".line-move.current .current_inner"
+  );
+  const previewLoading = document.querySelector(".preview_bar .preview_fill");
+
+  const tl1 = gsap.timeline({
+    defaults: { duration: 1, ease: "power2.inOut" },
+  });
+
+  const titleMaskingTextSplit = new SplitText(titleMaskingText, {
+    type: "words,chars",
+    charClass: "char",
+  });
+
+  const centerMaskingTextSplit = new SplitText(centerMaskingText, {
+    type: "words,chars",
+    charClass: "char",
+  });
+
+  const footerMaskingTextSplit = new SplitText(footerMaskingText, {
+    type: "lines",
+  });
+  chars = titleMaskingTextSplit.chars;
+  centerChars = centerMaskingTextSplit.chars;
+  footerLines = footerMaskingTextSplit.lines;
+
+  gsap.set(".masking-text .line", { perspective: 400 });
+
+  tl1
+    .from(chars, {
+      duration: 0.6,
+      y: 200,
+      ease: "power1.out",
+      stagger: 0.02,
+    }, ">")
+    .from(
+      centerChars,
+      {
+        duration: 0.6,
+        y: 200,
+        ease: "power1.out",
+        stagger: 0.02,
+      },
+      "<"
+    )
+    .from(
+      footerLines,
+      {
+        duration: 0.6,
+        y: 200,
+        ease: "power1.out",
+        stagger: 0.06,
+      },
+      "<"
+    )
+    .to(
+      currentSlideNumber,
+      {
+        y: "-100%",
+        duration: 0.6,
+        ease: "power1.out",
+      },
+      "<"
+    ).to(previewLoading, {
+      duration: 4,
+      transform: "scaleX(1)",
+      ease: "none",
+      onComplete: () => {
+        tl1.restart();
+      }
+    });
+
+  hero2Content.addEventListener("click", () => {
+    tl1.restart();
   });
 });
 
