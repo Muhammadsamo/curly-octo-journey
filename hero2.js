@@ -1,9 +1,17 @@
 gsap.registerPlugin(SplitText);
-// on DOM ready
-document.addEventListener("DOMContentLoaded", function () {
-  const hero2Content = document.querySelector(".c-hero2 .content");
+let activeSlide = 0;
+let previousActiveSlide = 0;
+let slideCount = 3;
+let slideDuration = 4;
+let currentTimeline;
 
-  // Hero-2 Split text
+// Initialize on DOM ready
+document.addEventListener("DOMContentLoaded", function () {
+  // Element declarations
+  const bgImgs = document.querySelectorAll(".hero-bg-container .img");
+  const titles = document.querySelectorAll(".content .title-wrapper .title");
+  const previewItems = document.querySelectorAll(".js-preview_item");
+  const descriptions = document.querySelectorAll(".footer .desc-wrapper span");
   const titleMaskingText = document.querySelectorAll(
     ".title .masking-text .line"
   );
@@ -16,78 +24,192 @@ document.addEventListener("DOMContentLoaded", function () {
   const currentSlideNumber = document.querySelector(
     ".line-move.current .current_inner"
   );
-  const previewLoading = document.querySelector(".preview_bar .preview_fill");
+  const previewLoadingBar = document.querySelector(".preview_bar");
+  const previewLoadingFill = document.querySelector(
+    ".preview_bar .preview_fill"
+  );
 
-  const tl1 = gsap.timeline({
-    defaults: { duration: 1, ease: "power2.inOut" },
+  // Helper function to set preview bar position
+  function setPreviewBarPosition() {
+    let translateX;
+    switch (activeSlide) {
+      case 0:
+        translateX = "0";
+        break;
+      case 1:
+        translateX = "11.498vw";
+        break;
+      case 2:
+        translateX = "22.996vw";
+        break;
+    }
+    gsap.set(previewLoadingBar, {
+      transform: `scaleX(1) translateX(${translateX})`,
+    });
+  }
+
+  // Handle manual slide changes
+  function handlePreviewClick(index) {
+    console.log(index)
+    if (currentTimeline) {
+      currentTimeline.kill();
+      currentTimeline = null;
+    }
+
+    const bgImgActive = bgImgs[activeSlide];
+    const activeTitle = titles[activeSlide];
+    const activeDescription = descriptions[activeSlide];
+    bgImgActive.classList.remove("active");
+    activeTitle.classList.remove("active");
+    activeDescription.classList.remove("active");
+
+    previousActiveSlide = activeSlide;
+    activeSlide = index;
+
+    gsap.set(bgImgs, { scale: 1 });
+    bgImgs[activeSlide].classList.add("active");
+    titles[activeSlide].classList.add("active");
+    descriptions[activeSlide].classList.add("active");
+
+    gsap.set(previewLoadingFill, { transform: "scaleX(0)" });
+    setPreviewBarPosition();
+    animateSlide();
+  }
+
+  // Set initial bar position
+  setPreviewBarPosition();
+
+  // Add click handlers
+  previewItems.forEach((item, index) => {
+    console.log("clicked");
+    item.addEventListener("click", () => handlePreviewClick(index));
   });
 
-  const titleMaskingTextSplit = new SplitText(titleMaskingText, {
-    type: "words,chars",
-    charClass: "char",
-  });
-
-  const centerMaskingTextSplit = new SplitText(centerMaskingText, {
-    type: "words,chars",
-    charClass: "char",
-  });
-
-  const footerMaskingTextSplit = new SplitText(footerMaskingText, {
-    type: "lines",
-  });
-  chars = titleMaskingTextSplit.chars;
-  centerChars = centerMaskingTextSplit.chars;
-  footerLines = footerMaskingTextSplit.lines;
+  // SplitText initialization
+  const splits = {
+    title: new SplitText(titleMaskingText, {
+      type: "words,chars",
+      charClass: "char",
+    }),
+    center: new SplitText(centerMaskingText, {
+      type: "words,chars",
+      charClass: "char",
+    }),
+    footer: new SplitText(footerMaskingText, { type: "lines" }),
+  };
 
   gsap.set(".masking-text .line", { perspective: 400 });
 
-  tl1
-    .from(chars, {
-      duration: 0.6,
-      y: 200,
-      ease: "power1.out",
-      stagger: 0.02,
-    }, ">")
-    .from(
-      centerChars,
-      {
-        duration: 0.6,
-        y: 200,
-        ease: "power1.out",
-        stagger: 0.02,
-      },
-      "<"
-    )
-    .from(
-      footerLines,
-      {
-        duration: 0.6,
-        y: 200,
-        ease: "power1.out",
-        stagger: 0.06,
-      },
-      "<"
-    )
-    .to(
-      currentSlideNumber,
-      {
-        y: "-100%",
-        duration: 0.6,
-        ease: "power1.out",
-      },
-      "<"
-    ).to(previewLoading, {
-      duration: 4,
-      transform: "scaleX(1)",
-      ease: "none",
+  // Animation function
+  function animateSlide() {
+    const bgImgActive = bgImgs[activeSlide];
+    const activeTitle = titles[activeSlide];
+    const activeDescription = descriptions[activeSlide];
+
+    const tl = gsap.timeline({
+      defaults: { duration: 1, ease: "power2.inOut" },
       onComplete: () => {
-        tl1.restart();
-      }
+        bgImgActive.classList.remove("active");
+        activeTitle.classList.remove("active");
+        activeDescription.classList.remove("active");
+        previousActiveSlide = activeSlide;
+        activeSlide = (activeSlide + 1) % slideCount;
+        gsap.set(bgImgs, { scale: 1 });
+        bgImgs[activeSlide].classList.add("active");
+        titles[activeSlide].classList.add("active");
+        descriptions[activeSlide].classList.add("active");
+        animateSlide();
+      },
     });
 
-  hero2Content.addEventListener("click", () => {
-    tl1.restart();
-  });
+    currentTimeline = tl;
+
+    tl.to(bgImgActive, { duration: 4, scale: 1.1, ease: "power1.out" })
+      .from(
+        [splits.title.chars, splits.center.chars],
+        {
+          y: 200,
+          stagger: 0.02,
+          duration: 0.6,
+          ease: "power1.out",
+        },
+        "<"
+      )
+      .from(
+        splits.footer.lines,
+        {
+          y: 200,
+          stagger: 0.06,
+          duration: 0.6,
+          ease: "power1.out",
+        },
+        "<"
+      )
+      .to(
+        currentSlideNumber,
+        {
+          y: () => ["0%", "-100%", "-200%"][activeSlide],
+          duration: 0.6,
+          ease: "power1.out",
+        },
+        "<"
+      )
+      .to(
+        previewLoadingFill,
+        {
+          transform: "scaleX(1)",
+          ease: "none",
+          duration: 4,
+          onComplete: () => {
+            gsap.set(previewLoadingFill, { transform: "scaleX(0)" });
+            switch (activeSlide) {
+              case 0:
+                gsap.to(previewLoadingBar, {
+                  duration: 0.6,
+                  transform: `scaleX(2)`,
+                  ease: "power1.out",
+                });
+                gsap.to(previewLoadingBar, {
+                  duration: 0.6,
+                  transform: `scaleX(1) translateX(11.498vw)`,
+                  ease: "power1.out",
+                  delay: 0.6,
+                });
+                break;
+              case 1:
+                gsap.to(previewLoadingBar, {
+                  duration: 0.6,
+                  transform: `scaleX(2) translateX(5.749vw)`,
+                  ease: "power1.out",
+                });
+                gsap.to(previewLoadingBar, {
+                  duration: 0.6,
+                  transform: `scaleX(1) translateX(22.996vw)`,
+                  ease: "power1.out",
+                  delay: 0.6,
+                });
+                break;
+              case 2:
+                gsap.to(previewLoadingBar, {
+                  duration: 0.6,
+                  transform: `scaleX(3) translateX(0)`,
+                  ease: "power1.out",
+                });
+                gsap.to(previewLoadingBar, {
+                  duration: 0.6,
+                  transform: `scaleX(1) translateX(0)`,
+                  ease: "power1.out",
+                  delay: 0.6,
+                });
+                break;
+            }
+          },
+        },
+        "<"
+      );
+  }
+
+  animateSlide();
 });
 
 // Infinite Marquee Function
